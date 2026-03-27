@@ -8,6 +8,12 @@ const swiperWrapper = document.querySelector('.swiper-wrapper'); // corrigido aq
 const formulario = document.querySelector('#formulario');
 
 
+const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+
+
+
+
+
 
 async function getAboutGitHub() {
     
@@ -227,6 +233,64 @@ function iniciarSwiper() {
         slidesOffsetAfter: 0, 
     });
 }
+
+
+formulario.addEventListener('submit', function(event) {
+
+event.preventDefault();
+document.querySelectorAll('form span').forEach(span => span.innerHTML = '');
+
+let isValid = true;
+
+const nome = document.querySelector('#nome')
+const erroNome = document.querySelector('#erro-nome');
+
+if (nome.value.trim().length < 3){
+    erroNome.innerHTML = 'O nome deve ter no minimo 3 caracteres'
+    if (isValid) nome.focus();
+    isValid = false
+}
+
+const email = document.querySelector('#email')
+const erroEmail = document.querySelector('#erro-email');
+
+if (!email.value.trim().match(emailRegex)){
+    erroEmail.innerHTML = 'Digite um endereco de email valido'
+    if (isValid) email.focus();
+    isValid = false;
+}
+
+const assunto = document.querySelector('#assunto')
+const erroAssunto = document.querySelector('#erro-assunto');
+
+if (assunto.value.trim().length < 5){
+    erroAssunto.innerHTML = 'O Assunto deve ter no minimo 5 caracteres'
+    if (isValid) assunto.focus();
+    isValid = false;
+}
+
+const mensagem = document.querySelector('#mensagem')
+const erroMensagem = document.querySelector('#erro-mensagem');
+
+if (mensagem.value.trim().length === 0 ){
+    erroMensagem.innerHTML = 'A mensagem nao pode ser vazia'
+    if (isValid) mensagem.focus();
+    isValid = false;
+}
+
+if (isValid){
+    const submitButton = formulario.querySelector('button[type="submit"]');
+    submitButton.disabled = true;
+    submitButton.textContent = "Enviando...";
+
+    formulario.submit();
+}
+
+
+})
+
+
+
 
 // executar a função getAboutGitHub
 getAboutGitHub();
